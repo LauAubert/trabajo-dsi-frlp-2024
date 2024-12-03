@@ -22,21 +22,21 @@ def altaPrueba(request):
         nueva_prueba.ganador = Ciclista.objects.get(pk=request.POST['ganadorId'])
         nueva_prueba.save()
         clasificacion = request.POST['clasificacion-input']
-        clasificacion = json.loads(clasificacion)
-        # clasificacion = [ {posicion:int, equipo:int}, ... ]
-        
-        clasificaciones = [
-            Clasificacion(
-            prueba=nueva_prueba,
-            posicion=item['posicion'],
-            equipo=Equipo.objects.get(pk=item['equipo'])
-            ) for item in clasificacion
-        ]
-        
-        Clasificacion.objects.bulk_create(clasificaciones)
-        print(nueva_prueba.id)
 
-        return HttpResponse('Prueba guardada correctamente')
+        # clasificacion = [ {posicion:int, equipo:int}, ... ]
+        if clasificacion is not None and len(clasificacion) > 0:
+            clasificacion = json.loads(clasificacion)
+            clasificaciones = [
+                Clasificacion(
+                prueba=nueva_prueba,
+                posicion=item['posicion'],
+                equipo=Equipo.objects.get(pk=item['equipo'])
+                ) for item in clasificacion
+            ]
+            
+            Clasificacion.objects.bulk_create(clasificaciones)
+
+        return render(request, 'small/añadirOtro.html')
 
 def altaClasificacion(request):
     if request.method == 'GET':

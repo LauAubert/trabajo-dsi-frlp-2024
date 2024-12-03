@@ -1,3 +1,4 @@
+{% extends 'skeleton.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +11,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
+{% block content %}
     <div class="container mt-5 border" id="alta-prueba">
         {% include 'small/altaPrueba.html' with ciclistas=ciclistas %}
     </div>
@@ -18,14 +19,11 @@
     <div class="container mt-5 border" id="alta-clasificacion">
         {% include 'small/altaClasificacion.html' with equipos=equipos %}
     </div>
+{% endblock %}
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+{% block scripts %}
     <script src="{% static 'gestionarClasificacion.js' %}"></script>
     <script>
-
         $(document).ready(function() {
             $('#alta-clasificacion').hide();
         });
@@ -46,8 +44,6 @@
             $('#alta-clasificacion').hide();
             $('#alta-prueba').show();
             $('#clasificacion-input').val(JSON.stringify(clasificacion));
-            // $('#alta-prueba').submit();
         }
     </script>
-</body>
-</html>
+{% endblock %}
