@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta Prueba</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Alta Prueba</h1>
+        <form action="altaPrueba" method="post"> {% csrf_token %}
+            <input type="text" id="clasificacion-input" name="clasificacion-input" style="display: none;">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="anioEdicion">Año de Edición</label>
+                    <input type="number" class="form-control" id="anioEdicion" name="anioEdicion" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="cantidadEtapas">Cantidad de Etapas</label>
+                    <input type="number" class="form-control" id="cantidadEtapas" name="cantidadEtapas" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="kilometrosTotales">Kilómetros Totales</label>
+                    <input type="number" class="form-control" id="kmsTotales" name="kmsTotales" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 d-flex align-items-end justify-content-center">
+                    <button class="btn btn-primary" onclick="mostrarAltaClasificacion()">Subir Clasificación</button>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ganadorId">Ganador</label>
+                    <select class="form-control" name="ganadorId" required>
+                        <option value="">Seleccione un ciclista</option>
+                        {% for ciclista in ciclistas %}
+                        <option value="{{ ciclista.id }}">{{ ciclista.nombre }} {{ ciclista.apellido }} ({{ ciclista.nacionalidad }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

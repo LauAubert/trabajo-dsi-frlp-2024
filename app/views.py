@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
-from app.models import Ciclista, Equipo, Prueba
+from app.models import Ciclista, Equipo, Prueba, Clasificacion
+import json
 
 
 
@@ -20,6 +21,19 @@ def altaPrueba(request):
         nueva_prueba.kmsTotales = request.POST['kmsTotales']
         nueva_prueba.ganador = Ciclista.objects.get(pk=request.POST['ganadorId'])
         nueva_prueba.save()
+        clasificacion = request.POST['clasificacion-input']
+        clasificacion = json.loads(clasificacion)
+        # clasificacion = [ {posicion:int, equipo:int}, ... ]
+        
+        clasificaciones = [
+            Clasificacion(
+            prueba=nueva_prueba,
+            posicion=item['posicion'],
+            equipo=Equipo.objects.get(pk=item['equipo'])
+            ) for item in clasificacion
+        ]
+        
+        Clasificacion.objects.bulk_create(clasificaciones)
         print(nueva_prueba.id)
 
         return HttpResponse('Prueba guardada correctamente')
@@ -30,4 +44,7 @@ def altaClasificacion(request):
         return render(request, 'altaClasificacion.html', context={'equipos': equipos})
     
 def main(request):
-    return render(request, 'index.html')
+    if request.method == 'GET':
+        ciclistas = Ciclista.objects.all()
+        equipos = Equipo.objects.all()
+        return render(request, 'index.html', context={'ciclistas': ciclistas, 'equipos': equipos})
