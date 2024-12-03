@@ -47,5 +47,6 @@ class Clasificacion(models.Model):
     equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.posicion) + ' ' + self.idPrueba.nombre + ' ' + self.idEquipo.nombre
+        # return str(self.posicion) + ' ' + self.prueba.nombre + ' ' + self.equipo.nombre
+        return f'{self.equipo.nombre} salió {self.posicion}° en la prueba "{self.prueba.nombre}"'
 

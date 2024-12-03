@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta Clasificación</title>
+    <link rel="stylesheet" href="{% static 'altaClasificacion.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Alta Clasificación</h1>
+
+        <form id="clasificacion-form">
+            <!-- Fila para los campos de posición y equipo -->
+            <div class="form-row">
+                <div style="flex: 1; margin-right: 10px;">
+                    <label for="posicion" style="margin-right: 10px;">Posición</label>
+                    <input id="posicion" type="number" min="1" max="10" placeholder="Ingrese la posición" required>
+                </div>
+                <div style="flex: 1;">
+                    <!-- <label for="equipo">Equipo</label> -->
+                    <select id="equipo" name="ganadorId" required>
+                        <option value="">Seleccione un equipo</option>
+                        {% for equipo in equipos %}
+                            <option value="{{ equipo.id }}">{{ equipo.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <button type="button" class="btn" onclick="agregarClasificacion()">+</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tabla para mostrar la clasificación -->
+        <table id="tabla-clasificacion">
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Equipo</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas se agregarán dinámicamente -->
+            </tbody>
+        </table>
+
+        <div class="action-buttons">
+            <button type="button" class="btn btn-secondary" onclick="cancelarClasificacion()">Cancelar</button>
+            <button type="submit" class="btn" onClick="guardarClasificaciones()">Guardar</button>
+        </div>
+    </div>
+
+    <script>
+        let clasificacion = [];
+        function agregarClasificacion() {
+            const posicion = document.getElementById('posicion').value;
+            const equipo = document.getElementById('equipo').value;
+            const equipoNombre = document.getElementById('equipo').options[document.getElementById('equipo').selectedIndex].text;
+
+            if (posicion && equipo) {
+                const tabla = document.getElementById('tabla-clasificacion').getElementsByTagName('tbody')[0];
+                const nuevaFila = tabla.insertRow();
+                nuevaFila.innerHTML = `
+                    <td>${posicion}</td>
+                    <td>${equipoNombre}</td>
+                    <td><span class="remove-btn" onclick="eliminarClasificacion(this)">Eliminar</span></td>
+                `;
+
+                // Limpiar los campos de entrada
+                document.getElementById('posicion').value = '';
+                document.getElementById('equipo').value = '';
+                clasificacion.push({ posicion, equipo });
+                console.log(clasificacion);
+            }
+        }
+
+        function eliminarClasificacion(btn) {
+            const row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            clasificacion.splice(row.rowIndex - 1, 1);
+            console.log(clasificacion);
+        }
+
+        function cancelarClasificacion() {
+            const tabla = document.getElementById('tabla-clasificacion').getElementsByTagName('tbody')[0];
+            tabla.innerHTML = '';  // Elimina todas las filas de la tabla
+            clasificacion = [];
+            console.log(clasificacion);
+        }
+
+        function guardarClasificaciones() {
+            localStorage.setItem("clasificacion", JSON.stringify(clasificacion)) /* guarda las clasificaciones en el localStorage */
+        }
+    </script>
+
+</body>
+</html>

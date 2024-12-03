@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta Prueba</title>
+    <link rel="stylesheet" href="{% static 'altaPrueba.css' %}">
+</head>
+<body>
+    <h1>Alta Prueba</h1>
+    <form action="altaPrueba" method="post"> {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="anioEdicion">Año de Edición</label>
+                <input type="number" id="anioEdicion" name="anioEdicion" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="cantidadEtapas">Cantidad de Etapas</label>
+                <input type="number" id="cantidadEtapas" name="cantidadEtapas" required>
+            </div>
+            <div class="form-group">
+                <label for="kilometrosTotales">Kilómetros Totales</label>
+                <input type="number" id="kmsTotales" name="kmsTotales" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <a href="altaClasificacion" class="btn btn-clasificacion">Clasificación</a>
+            <div class="form-group">
+                <label for="ganadorId">Ganador</label>
+                <select name="ganadorId" required>
+                    <option value="">Seleccione un ciclista</option>
+                    {% for ciclista in ciclistas %}
+                        <option value="{{ ciclista.id }}">{{ ciclista.nombre }} {{ ciclista.apellido }} ({{ ciclista.nacionalidad }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn">OK</button>
+        </div>
+    </form>
+</body>
+
+</html>
