@@ -17,4 +17,3 @@
 */.serverless_plugins/
 */.serverlessrc
 */.serverlessignore
-*.sqlite3
